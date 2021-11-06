@@ -852,6 +852,115 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
             )
             .await)
     }
+
+    async fn hardhat_impersonate_account(&self, account: Address) -> Result<(), Self::Error> {
+        self.request("hardhat_impersonateAccount", [utils::serialize(&account)]).await
+    }
+
+    async fn hardhat_stop_impersonating_account(
+        &self,
+        account: Address,
+    ) -> Result<(), Self::Error> {
+        self.request("hardhat_stopImpersonatingAccount", [utils::serialize(&account)]).await
+    }
+
+    async fn hardhat_get_automine(&self) -> Result<bool, Self::Error> {
+        self.request("hardhat_getAutomine", ()).await
+    }
+
+    async fn hardhat_reset(&self) -> Result<(), Self::Error> {
+        self.request("hardhat_reset", ()).await
+    }
+
+    async fn hardhat_set_balance<T>(&self, account: Address, amount: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.request(
+            "hardhat_setBalance",
+            [utils::serialize(&account), utils::serialize(&amount.into())],
+        )
+        .await
+    }
+
+    async fn hardhat_set_storage_at<T, R>(
+        &self,
+        address: Address,
+        slot: T,
+        data: R,
+    ) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+        R: Into<U256> + Send + Sync,
+    {
+        self.request(
+            "hardhat_setStorageAt",
+            [
+                utils::serialize(&address),
+                utils::serialize(&slot.into()),
+                utils::serialize(&data.into()),
+            ],
+        )
+        .await
+    }
+
+    async fn hardhat_set_code(&self, address: Address, code: Bytes) -> Result<(), Self::Error> {
+        self.request(" hardhat_setCode", [utils::serialize(&address), utils::serialize(&code)])
+            .await
+    }
+
+    async fn hardhat_set_min_gas_price<T>(&self, gas_price: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.request("hardhat_setMinGasPrice", [utils::serialize(&gas_price.into())]).await
+    }
+
+    async fn hardhat_set_nonce<T>(&self, account: Address, nonce: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.request(
+            "hardhat_setNonce",
+            [utils::serialize(&account), utils::serialize(&nonce.into())],
+        )
+        .await
+    }
+
+    async fn evm_increase_time(&self) -> Result<(), Self::Error> {
+        self.request("evm_increaseTime", ()).await
+    }
+
+    async fn evm_mine(&self) -> Result<(), Self::Error> {
+        self.request("evm_mine", ()).await
+    }
+
+    async fn evm_revert(&self) -> Result<(), Self::Error> {
+        self.request("evm_revert", ()).await
+    }
+
+    async fn evm_set_automine(&self, enabled: bool) -> Result<(), Self::Error> {
+        self.request("evm_setAutomine", [enabled]).await
+    }
+
+    async fn evm_set_block_gas_limit<T>(&self, gas_price: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.request("evm_setBlockGasLimit", [utils::serialize(&gas_price.into())]).await
+    }
+
+    async fn evm_set_interval_mining(&self, interval: u64) -> Result<(), Self::Error> {
+        self.request("evm_setIntervalMining", [utils::serialize(&interval)]).await
+    }
+
+    async fn evm_set_next_block_timestamp(&self, timestamp: u64) -> Result<(), Self::Error> {
+        self.request("evm_setNextBlockTimestamp", [utils::serialize(&timestamp)]).await
+    }
+
+    async fn evm_snapshot(&self) -> Result<(), Self::Error> {
+        self.request("evm_snapshot", ()).await
+    }
 }
 
 impl<P: JsonRpcClient> Provider<P> {
