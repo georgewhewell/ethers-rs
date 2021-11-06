@@ -629,6 +629,97 @@ pub trait Middleware: Sync + Send + Debug {
     ) -> Result<AccessListWithGasUsed, Self::Error> {
         self.inner().create_access_list(tx, block).await.map_err(FromErr::from)
     }
+
+    async fn hardhat_impersonate_account(&self, account: Address) -> Result<(), Self::Error> {
+        self.inner().hardhat_impersonate_account(account).await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_stop_impersonating_account(
+        &self,
+        account: Address,
+    ) -> Result<(), Self::Error> {
+        self.inner().hardhat_stop_impersonating_account(account).await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_set_storage_at<
+        T: Into<U256> + serde::Serialize + Send + Sync,
+        R: Into<U256> + serde::Serialize + Send + Sync,
+    >(
+        &self,
+        address: Address,
+        slot: T,
+        data: R,
+    ) -> Result<(), Self::Error> {
+        self.inner().hardhat_set_storage_at(address, slot, data).await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_set_code(&self, address: Address, code: Bytes) -> Result<(), Self::Error> {
+        self.inner().hardhat_set_code(address, code).await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_get_automine(&self) -> Result<bool, Self::Error> {
+        self.inner().hardhat_get_automine().await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_reset(&self) -> Result<(), Self::Error> {
+        self.inner().hardhat_reset().await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_set_balance<T>(&self, account: Address, amount: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.inner().hardhat_set_balance(account, amount).await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_set_min_gas_price<T>(&self, gas_price: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.inner().hardhat_set_min_gas_price(gas_price).await.map_err(FromErr::from)
+    }
+
+    async fn hardhat_set_nonce<T>(&self, account: Address, nonce: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.inner().hardhat_set_nonce(account, nonce).await.map_err(FromErr::from)
+    }
+
+    async fn evm_increase_time(&self) -> Result<(), Self::Error> {
+        self.inner().evm_increase_time().await.map_err(FromErr::from)
+    }
+
+    async fn evm_mine(&self, timestamp: u64) -> Result<U256, Self::Error> {
+        self.inner().evm_mine(timestamp).await.map_err(FromErr::from)
+    }
+
+    async fn evm_revert(&self) -> Result<(), Self::Error> {
+        self.inner().evm_revert().await.map_err(FromErr::from)
+    }
+
+    async fn evm_set_automine(&self, enabled: bool) -> Result<(), Self::Error> {
+        self.inner().evm_set_automine(enabled).await.map_err(FromErr::from)
+    }
+
+    async fn evm_set_block_gas_limit<T>(&self, gas_limit: T) -> Result<(), Self::Error>
+    where
+        T: Into<U256> + Send + Sync,
+    {
+        self.inner().evm_set_block_gas_limit(gas_limit).await.map_err(FromErr::from)
+    }
+
+    async fn evm_set_interval_mining(&self, interval: u64) -> Result<(), Self::Error> {
+        self.inner().evm_set_interval_mining(interval).await.map_err(FromErr::from)
+    }
+
+    async fn evm_set_next_block_timestamp(&self, timestamp: u64) -> Result<(), Self::Error> {
+        self.inner().evm_set_next_block_timestamp(timestamp).await.map_err(FromErr::from)
+    }
+
+    async fn evm_snapshot(&self) -> Result<(), Self::Error> {
+        self.inner().evm_snapshot().await.map_err(FromErr::from)
+    }
 }
 
 #[cfg(feature = "celo")]
