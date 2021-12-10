@@ -132,7 +132,7 @@ impl Client {
     }
 
     /// Execute an API GET request with parameters
-    async fn get_json<T: DeserializeOwned, Q: Serialize>(&self, query: &Q) -> Result<Response<T>> {
+    pub async fn get_json<T: DeserializeOwned, Q: Serialize>(&self, query: &Q) -> Result<Response<T>> {
         Ok(self
             .client
             .get(self.etherscan_api_url.clone())
@@ -144,7 +144,7 @@ impl Client {
             .await?)
     }
 
-    fn create_query<T: Serialize>(
+    pub fn create_query<T: Serialize>(
         &self,
         module: &'static str,
         action: &'static str,
@@ -169,7 +169,7 @@ pub struct Response<T> {
 
 /// The type that gets serialized as query
 #[derive(Debug, Serialize)]
-struct Query<'a, T: Serialize> {
+pub struct Query<'a, T: Serialize> {
     apikey: Cow<'a, str>,
     module: Cow<'a, str>,
     action: Cow<'a, str>,
