@@ -284,21 +284,22 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
         // estimate the gas without the access list
         let gas = maybe(tx.gas().cloned(), self.estimate_gas(tx)).await?;
         let mut al_used = false;
+        println!("maybe gas is: {:?}", gas);
 
         // set the access lists
-        if let Some(access_list) = tx.access_list() {
-            if access_list.0.is_empty() {
-                if let Ok(al_with_gas) = self.create_access_list(tx, block).await {
-                    // only set the access list if the used gas is less than the
-                    // normally estimated gas
-                    if al_with_gas.gas_used < gas {
-                        tx.set_access_list(al_with_gas.access_list);
-                        tx.set_gas(al_with_gas.gas_used);
-                        al_used = true;
-                    }
-                }
-            }
-        }
+        // if let Some(access_list) = tx.access_list() {
+        //     if access_list.0.is_empty() {
+        //         if let Ok(al_with_gas) = self.create_access_list(tx, block).await {
+        //             // only set the access list if the used gas is less than the
+        //             // normally estimated gas
+        //             if al_with_gas.gas_used < gas {
+        //                 tx.set_access_list(al_with_gas.access_list);
+        //                 tx.set_gas(al_with_gas.gas_used);
+        //                 al_used = true;
+        //             }
+        //         }
+        //     }
+        // }
 
         if !al_used {
             tx.set_gas(gas);
@@ -1060,7 +1061,7 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
         self.request("evm_revert", ()).await
     }
 
-    async fn evm_set_automine(&self, enabled: bool) -> Result<(), Self::Error> {
+    async fn evm_set_automine(&self, enabled: bool) -> Result<bool, Self::Error> {
         self.request("evm_setAutomine", [enabled]).await
     }
 
@@ -1071,7 +1072,7 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
         self.request("evm_setBlockGasLimit", [utils::serialize(&gas_price.into())]).await
     }
 
-    async fn evm_set_interval_mining(&self, interval: u64) -> Result<(), Self::Error> {
+    async fn evm_set_interval_mining(&self, interval: u64) -> Result<bool, Self::Error> {
         self.request("evm_setIntervalMining", [utils::serialize(&interval)]).await
     }
 

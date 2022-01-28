@@ -698,7 +698,7 @@ pub trait Middleware: Sync + Send + Debug {
         self.inner().evm_revert().await.map_err(FromErr::from)
     }
 
-    async fn evm_set_automine(&self, enabled: bool) -> Result<(), Self::Error> {
+    async fn evm_set_automine(&self, enabled: bool) -> Result<bool, Self::Error> {
         self.inner().evm_set_automine(enabled).await.map_err(FromErr::from)
     }
 
@@ -709,7 +709,7 @@ pub trait Middleware: Sync + Send + Debug {
         self.inner().evm_set_block_gas_limit(gas_limit).await.map_err(FromErr::from)
     }
 
-    async fn evm_set_interval_mining(&self, interval: u64) -> Result<(), Self::Error> {
+    async fn evm_set_interval_mining(&self, interval: u64) -> Result<bool, Self::Error> {
         self.inner().evm_set_interval_mining(interval).await.map_err(FromErr::from)
     }
 
