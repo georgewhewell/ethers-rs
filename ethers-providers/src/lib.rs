@@ -673,8 +673,8 @@ pub trait Middleware: Sync + Send + Debug {
         self.inner().hardhat_set_nonce(account, nonce).await.map_err(FromErr::from)
     }
 
-    async fn evm_increase_time(&self) -> Result<(), Self::Error> {
-        self.inner().evm_increase_time().await.map_err(FromErr::from)
+    async fn evm_increase_time(&self, timestamp: u64) -> Result<u64, Self::Error> {
+        self.inner().evm_increase_time(timestamp).await.map_err(FromErr::from)
     }
 
     async fn evm_mine(&self, timestamp: u64) -> Result<U256, Self::Error> {

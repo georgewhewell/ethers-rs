@@ -1025,8 +1025,8 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
         .await
     }
 
-    async fn evm_increase_time(&self) -> Result<(), Self::Error> {
-        self.request("evm_increaseTime", ()).await
+    async fn evm_increase_time(&self, timestamp: u64) -> Result<u64, Self::Error> {
+        self.request("evm_increaseTime", [timestamp]).await
     }
 
     async fn evm_mine(&self, timestamp: u64) -> Result<U256, Self::Error> {
