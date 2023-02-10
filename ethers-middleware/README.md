@@ -5,7 +5,7 @@ Your ethers application interacts with the blockchain through a [`Provider`](eth
 
 - [`Signer`](./signer/struct.SignerMiddleware.html): Signs transactions locally, with a private key or a hardware wallet.
 - [`Nonce Manager`](./nonce_manager/struct.NonceManagerMiddleware.html): Manages nonces locally. Allows to sign multiple consecutive transactions without waiting for them to hit the mempool.
-- [`Gas Escalator`](./gas_escalator/struct.GasEscalatorMiddleware.html): Bumps transactions gas price in the background to avoid getting them stuck in the memory pool. A [`GasEscalatorMiddleware`](crate::gas_escalator::GasEscalatorMiddleware) supports different escalation strategies (see [GasEscalator](crate::gas_escalator::GasEscalator)) and bump frequencies (see [Frequency](crate::gas_escalator::Frequency)).
+- [`Gas Escalator`](./gas_escalator/struct.GasEscalatorMiddleware.html): Bumps transactions gas price in the background to avoid getting them stuck in the memory pool. A [`GasEscalatorMiddleware`](ethers_middleware::gas_escalator::GasEscalatorMiddleware) supports different escalation strategies (see [GasEscalator](ethers_middleware::gas_escalator::GasEscalator)) and bump frequencies (see [Frequency](ethers_middleware::gas_escalator::Frequency)).
 - [`Gas Oracle`](./gas_oracle/struct.GasOracleMiddleware.html): Allows getting
   your gas price estimates from places other than `eth_gasPrice`, including REST based gas stations (i.e. Etherscan, ETH Gas Station etc.).
 - [`Transformer`](./transformer/trait.Transformer.html): Allows intercepting and
