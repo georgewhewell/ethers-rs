@@ -22,9 +22,9 @@ impl Context {
             .map(|event| self.expand_event(event))
             .collect::<Result<Vec<_>>>()?;
 
-        // only expand enums when multiple events are present
+        // only create Events enum if contract has events
         let events_enum_decl =
-            if data_types.len() > 1 { Some(self.expand_events_enum()) } else { None };
+            if !data_types.is_empty() { Some(self.expand_events_enum()) } else { None };
 
         Ok(quote! {
             #( #data_types )*
